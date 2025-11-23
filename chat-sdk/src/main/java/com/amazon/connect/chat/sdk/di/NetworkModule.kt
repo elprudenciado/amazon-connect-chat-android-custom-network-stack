@@ -30,7 +30,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object NetworkModule {
+open class NetworkModule {
 
     /**
      * Provides a singleton instance of OkHttpClient.
@@ -118,17 +118,17 @@ object NetworkModule {
         return AmazonConnectParticipantClient(clientConfiguration)
     }
 
-//    /**
-//     * Provides a singleton instance of AWSClient.
-//     *
-//     * @param connectParticipantClient The AmazonConnectParticipantClient instance for AWS SDK calls.
-//     * @return An instance of AWSClientImpl.
-//     */
-//    @Provides
-//    @Singleton
-//    fun provideAWSClient(connectParticipantClient: AmazonConnectParticipantClient): AWSClient {
-//        return AWSClientImpl(connectParticipantClient)
-//    }
+    /**
+     * Provides a singleton instance of AWSClient.
+     *
+     * @param connectParticipantClient The AmazonConnectParticipantClient instance for AWS SDK calls.
+     * @return An instance of AWSClientImpl.
+     */
+    @Provides
+    @Singleton
+    open fun provideAWSClient(connectParticipantClient: AmazonConnectParticipantClient): AWSClient {
+        return AWSClientImpl(connectParticipantClient)
+    }
 
     /**
      * Provides a singleton instance of APIClient.
