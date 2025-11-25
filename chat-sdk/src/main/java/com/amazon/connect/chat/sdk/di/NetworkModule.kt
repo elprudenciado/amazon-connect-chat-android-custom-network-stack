@@ -30,7 +30,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-open class AwsNetworkModule {
+open class NetworkModule {
 
     /**
      * Provides a singleton instance of OkHttpClient.
@@ -43,6 +43,8 @@ open class AwsNetworkModule {
         return OkHttpClient.Builder().build()
     }
 
+    @Suppress("unused")
+    private val keepGson = GsonConverterFactory::class
     /**
      * Provides a singleton instance of Retrofit.Builder.
      *

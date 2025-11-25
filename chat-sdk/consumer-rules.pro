@@ -1,0 +1,4 @@
+-keep class com.google.gson.** { *; }
+-keep class retrofit2.converter.gson.GsonConverterFactory { *; }
+-keepattributes Signature
+-dontwarn com.google.gson.**

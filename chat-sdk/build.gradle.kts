@@ -87,7 +87,7 @@ dependencies {
     api(libs.retrofit)
     implementation(libs.okhttp)
     api(libs.adapterRxjava2)
-    implementation(libs.converterGson)
+    api(libs.converterGson)
     implementation(libs.loggingInterceptor)
 
     //Hilt
