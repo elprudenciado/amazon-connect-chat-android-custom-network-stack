@@ -23,6 +23,7 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import java.util.Optional
 import javax.inject.Singleton
 
 @Module
@@ -42,7 +43,7 @@ object ChatModule {
     @Singleton
     fun provideChatService(
         context: Context,
-        awsClient: AWSClient,
+        awsClient: Optional<AWSClient>,
         connectionDetailsProvider: ConnectionDetailsProvider,
         webSocketManager: WebSocketManager,
         metricsManager: MetricsManager,

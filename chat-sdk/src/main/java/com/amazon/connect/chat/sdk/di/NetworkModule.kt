@@ -18,6 +18,7 @@ import com.amazon.connect.chat.sdk.repository.MetricsManager
 import com.amazon.connect.chat.sdk.utils.MetricsUtils.getMetricsEndpoint
 import com.amazon.connect.chat.sdk.utils.CommonUtils
 import com.amazonaws.services.connectparticipant.AmazonConnectParticipantClient
+import dagger.BindsOptionalOf
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,8 +26,9 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Named
+import java.util.Optional
 import javax.inject.Singleton
+import kotlin.jvm.optionals.getOrElse
 
 
 @Module
@@ -91,8 +93,8 @@ object NetworkModule {
      */
     @Provides
     @Singleton
-    fun provideAttachmentsManager(context: Context, awsClient: AWSClient, apiClient: APIClient): AttachmentsManager {
-        return AttachmentsManager(context, awsClient, apiClient)
+    fun provideAttachmentsManager(context: Context, awsClient: Optional<AWSClient>, apiClient: APIClient): AttachmentsManager {
+        return AttachmentsManager(context, awsClient.getOrElse { AWSClientImpl.create() }, apiClient)
     }
 
     /**
@@ -125,12 +127,11 @@ object NetworkModule {
      * @param connectParticipantClient The AmazonConnectParticipantClient instance for AWS SDK calls.
      * @return An instance of AWSClientImpl.
      */
-    @Provides
-    @Singleton
-    @Named("SDKDefaultAWS")
-    fun provideAWSClient(connectParticipantClient: AmazonConnectParticipantClient): AWSClient {
-        return AWSClientImpl(connectParticipantClient)
-    }
+//    @Provides
+//    @Singleton
+//    fun provideAWSClient(connectParticipantClient: AmazonConnectParticipantClient): AWSClient {
+//        return AWSClientImpl(connectParticipantClient)
+//    }
 
     /**
      * Provides a singleton instance of APIClient.
@@ -166,4 +167,11 @@ object NetworkModule {
     fun provideMessageReceiptsManager(): MessageReceiptsManager {
         return MessageReceiptsManagerImpl()
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class OptionalAwsModule {
+    @BindsOptionalOf
+    abstract fun bindAwsClient(): AWSClient
 }

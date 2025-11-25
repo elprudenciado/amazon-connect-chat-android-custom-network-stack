@@ -28,6 +28,7 @@ import com.amazon.connect.chat.sdk.model.TranscriptData
 import com.amazon.connect.chat.sdk.model.TranscriptItem
 import com.amazon.connect.chat.sdk.model.TranscriptResponse
 import com.amazon.connect.chat.sdk.network.AWSClient
+import com.amazon.connect.chat.sdk.network.AWSClientImpl
 import com.amazon.connect.chat.sdk.network.WebSocketManager
 import com.amazon.connect.chat.sdk.provider.ConnectionDetailsProvider
 import com.amazon.connect.chat.sdk.utils.CommonUtils.Companion.getMimeType
@@ -50,10 +51,12 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import java.net.URL
+import java.util.Optional
 import java.util.Timer
 import java.util.UUID
 import javax.inject.Inject
 import kotlin.concurrent.schedule
+import kotlin.jvm.optionals.getOrElse
 
 interface ChatService {
 
@@ -170,7 +173,7 @@ interface ChatService {
 
 class ChatServiceImpl @Inject constructor(
     private val context: Context,
-    private val awsClient: AWSClient,
+    private val optionalAwsClient: Optional<AWSClient>,
     private val connectionDetailsProvider: ConnectionDetailsProvider,
     private val webSocketManager: WebSocketManager,
     private val metricsManager: MetricsManager,
@@ -211,6 +214,8 @@ class ChatServiceImpl @Inject constructor(
 
     // Dictionary to map temporary attachment message IDs to file urls
     private val tempMessageIdToFileUrl = mutableMapOf<String, Uri>()
+
+    val awsClient = optionalAwsClient.getOrElse { AWSClientImpl.create() }
 
     override fun configure(config: GlobalConfig) {
         awsClient.configure(config)

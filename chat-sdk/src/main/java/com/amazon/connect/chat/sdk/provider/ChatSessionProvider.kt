@@ -22,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.Optional
 
 object ChatSessionProvider {
     @Volatile
@@ -113,7 +114,7 @@ object ChatSessionProvider {
         // Step 7: Create ChatService and return ChatSessionImpl
         val chatService = ChatServiceImpl(
             appContext,
-            awsClient,
+            Optional.of(awsClient),
             connectionDetailsProvider,
             webSocketManager,
             metricsManager,
