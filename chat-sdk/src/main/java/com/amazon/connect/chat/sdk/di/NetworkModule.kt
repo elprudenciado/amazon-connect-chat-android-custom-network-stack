@@ -25,12 +25,13 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 
 @Module
 @InstallIn(SingletonComponent::class)
-open class NetworkModule {
+object NetworkModule {
 
     /**
      * Provides a singleton instance of OkHttpClient.
@@ -126,7 +127,8 @@ open class NetworkModule {
      */
     @Provides
     @Singleton
-    open fun provideAWSClient(connectParticipantClient: AmazonConnectParticipantClient): AWSClient {
+    @Named("SDKDefaultAWS")
+    fun provideAWSClient(connectParticipantClient: AmazonConnectParticipantClient): AWSClient {
         return AWSClientImpl(connectParticipantClient)
     }
 
