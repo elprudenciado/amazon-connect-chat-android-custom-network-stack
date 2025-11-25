@@ -30,7 +30,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-open class NetworkModule {
+open class AwsNetworkModule {
 
     /**
      * Provides a singleton instance of OkHttpClient.
