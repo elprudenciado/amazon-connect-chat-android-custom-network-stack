@@ -43,8 +43,6 @@ open class NetworkModule {
         return OkHttpClient.Builder().build()
     }
 
-    @Suppress("unused")
-    private val keepGson = GsonConverterFactory::class
     /**
      * Provides a singleton instance of Retrofit.Builder.
      *
